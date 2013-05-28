@@ -1,44 +1,45 @@
 package org.datanucleus.test;
 
-import org.junit.*;
-import javax.persistence.*;
+import static org.junit.Assert.fail;
 
-import static org.junit.Assert.*;
-import mydomain.model.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
 import org.datanucleus.util.NucleusLogger;
+import org.junit.Test;
 
-public class SimpleTest
-{
-    @Test
-    public void testSimple()
-    {
-        NucleusLogger.GENERAL.info(">> test START");
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("MyTest");
+import app.domain.model.Person;
 
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        try
-        {
-            tx.begin();
+public class SimpleTest {
+	@Test
+	public void testSimple() {
+		NucleusLogger.GENERAL.info(">> test START");
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("MyTest");
 
-            // [INSERT code here to persist object required for testing]
-            tx.commit();
-        }
-        catch (Throwable thr)
-        {
-            NucleusLogger.GENERAL.error(">> Exception thrown persisting data", thr);
-            fail("Failed to persist data : " + thr.getMessage());
-        }
-        finally 
-        {
-            if (tx.isActive())
-            {
-                tx.rollback();
-            }
-            em.close();
-        }
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		try {
+			tx.begin();
 
-        emf.close();
-        NucleusLogger.GENERAL.info(">> test END");
-    }
+			Person person = new Person();
+			em.persist(person);
+
+			tx.commit();
+		} catch (Throwable thr) {
+			NucleusLogger.GENERAL.error(">> Exception thrown persisting data",
+					thr);
+			fail("Failed to persist data : " + thr.getMessage());
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+			}
+			em.close();
+		}
+
+		emf.close();
+		NucleusLogger.GENERAL.info(">> test END");
+	}
 }
