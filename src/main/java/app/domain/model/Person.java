@@ -34,7 +34,7 @@ public final class Person extends DefaultEntity {
 	private List<String> middles = new ArrayList<String>();
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "PERSON_ADDRESSES", joinColumns = @JoinColumn(name = "person_id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "id", name = "address_id"))
+	@JoinTable(name = "PERSON_ADDRESSES", joinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(referencedColumnName = "id", name = "address_id"))
 	@MapKeyColumn(name = "address_name")
 	private Map<String, Address> addresses = new HashMap<String, Address>();
 
