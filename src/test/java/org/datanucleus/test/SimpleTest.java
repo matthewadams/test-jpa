@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 import static org.junit.Assert.*;
 import mydomain.model.*;
+
 import org.datanucleus.util.NucleusLogger;
 
 public class SimpleTest
@@ -21,7 +22,10 @@ public class SimpleTest
         {
             tx.begin();
 
-            // [INSERT code here to persist object required for testing]
+            em.createQuery("select x from Person x where x.name = :x", Person.class)
+            .setParameter("x", "foobar")
+            .getResultList();
+            
             tx.commit();
         }
         catch (Throwable thr)
